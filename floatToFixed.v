@@ -33,6 +33,9 @@ always @(*) begin
 		fixedresult = ~fixedresult + 1;
 		end
 //	j = i;
+	if(!targetnumber) begin
+		fixedresult = 0;
+		end
 	result = fixedresult;
 end
 
