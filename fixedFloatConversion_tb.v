@@ -7,8 +7,9 @@ module fixedFloatConversion_tb;
     reg [31:0] targetnumber;
     reg [4:0] fixpointpos;
     reg  opcode; 
+//	 wire [4:0] i;
     
-    wire [31:0] resultnumber;
+    wire[31:0] resultnumber;
     reg [31:0] R;
     
     // ---------------------------------------------------
@@ -19,13 +20,19 @@ module fixedFloatConversion_tb;
         .rst(rst) ,         
         .targetnumber(targetnumber), 
         .fixpointpos(fixpointpos),
-        .opcode(opcode) , 
+        .opcode(opcode) ,
         .result(resultnumber)
     );
-      
-    always @ * begin 
-        clk = ~clk; #50; 
-    end 
+
+    initial begin 
+        clk = 0; rst = 1; #50; 
+        clk = 1; rst = 1; #50; 
+        clk = 0; rst = 0; #50; 
+        clk = 1; rst = 0; #50; 
+        forever begin 
+            clk = ~clk; #50; 
+        end 
+    end
      
     integer failedTests = 0;
     integer totalTests = 0;
@@ -45,24 +52,9 @@ module fixedFloatConversion_tb;
         opcode = 1'b0; 
 
         $write("\tTest Case 1.1: Convert 25.25 (011001.01,2=>0 010000011 1001010..)...");
-        totalTests = totalTests +  1;
+        totalTests = totalTests + 1;
         // Set inputs
         fixpointpos = 4'b0010;
-        targetnumber = { {24'h000000}, {8'b011001_01}  }; 
-        R = 32'b0_10000011_10010100000000000000000;
-        #100; // Wait
-        if (R != resultnumber) begin
-            $display("failed"); 
-            failedTests = failedTests + 1;
-        end else begin
-            $display("passed"); 
-        end
-		  
-		  
-		  $write("\tTest Case 1.2: Convert 8.25 (011001.01,7=>0 010000011 1001010..)...");
-        totalTests = totalTests +  1;
-        // Set inputs
-        fixpointpos = 4'b0111;
         targetnumber = { {24'h000000}, {8'b011001_01}  }; 
         R = 32'b0_10000011_10010100000000000000000;
         #100; // Wait
@@ -80,32 +72,19 @@ module fixedFloatConversion_tb;
         opcode = 1'b1; 
 
         $write(" Test Case 2.1: 25.25 (0 10000011 1001010,2=>011001.01)..."); 
+        totalTests = totalTests + 1;
         opcode = 1'b1; 
         fixpointpos = 4'b0010;
         targetnumber = 32'b0_10000011_10010100000000000000000;
         R = { {24'h000000}, {8'b011001_01}  };  
         #100; 
         if ( R != resultnumber) begin
-            $display("failed");
+            $display("failed %d",resultnumber);
+            failedTests = failedTests + 1;
         end else begin
             $display("passed");
         end
-		  
-		          $display("Test Group 2: Testing Fixed point to floating point... ");
-        opcode = 1'b1; 
-
-        $write(" Test Case 2.2: 25.25 (0 10000011 1001010,2=>011001.01)..."); 
-        opcode = 1'b1; 
-        fixpointpos = 4'b0010;
-        targetnumber = 32'b0_10000011_10010100000000000000000;
-        R = { {24'h000000}, {8'b011001_01}  };  
-        #100; 
-        if ( R != resultnumber) begin
-            $display("failed");
-        end else begin
-            $display("passed");
-        end
-        
+            
 
         // --------------------------------------------------------------
         // End testing
