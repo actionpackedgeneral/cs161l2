@@ -38,6 +38,7 @@ always @* begin
 		floatresult = floatresult & 32'h0;
 		end
 //	j = b;
+	floatresult[31] = targetnumber[31];
 	
 	result = floatresult;
 end
