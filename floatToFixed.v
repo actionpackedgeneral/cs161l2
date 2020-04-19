@@ -25,7 +25,7 @@ always @(*) begin
 	
 	sign = fixedresult[31];
 	exponent = float[30:23] - 127;
-	i = 22 - fixpointpos + exponent;
+	i = 23 - (fixpointpos + exponent);
 	fixedresult[31:24] = 0;
 	fixedresult[23] = 1;
 	fixedresult = fixedresult >> i;
