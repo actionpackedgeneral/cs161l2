@@ -23,7 +23,7 @@ always @* begin
 	
 	floatresult = (targetnumber[31]) ? !floatresult + 1 : floatresult;
 	b = 31;
-	while(b >= 0 && floatresult[b] != 1)begin
+	while(b > 0 && floatresult[b] != 1)begin
 		b = b -1;
 		end
 	if(b < 23)begin
