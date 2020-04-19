@@ -1,41 +1,47 @@
 `timescale 1ns / 1ps
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
-module floatToFixed(
+module fixedToFloat(
   input wire clk, 
   input wire rst , 
-  input wire[31:0] float, 
+  input wire[31:0] targetnumber, 
   input wire[4:0] fixpointpos ,
 //  output reg[4:0] j,
   output reg[31:0] result );
 
-reg [31:0] fixedresult ; 
-reg [5:0] vbit;
-reg sign;
- //Your  Implementation 
+reg [31:0] floatresult ;
+reg [4:0] vbit;
 
+// Your  Implementation 
 
 // -------------------------------------------	
 // Register the results 
 // -------------------------------------------
-integer i,exponent,mantissa;
-always @(*) begin
+integer b,mantissa,exponent,i;
+always @* begin
+	floatresult = targetnumber;
 	
-	fixedresult = float;
-	
-	sign = fixedresult[31];
-	i = 0;
-	while(!fixedresult[i] && i < 23)begin
-		i = i + 1;
-	end
-	fixedresult[31:24] = 0;
-	fixedresult[23] = 1;
-	fixedresult = fixedresult >> i;
-	if(sign)begin
-		fixedresult = !fixedresult + 1;
+	floatresult = (targetnumber[31]) ? !floatresult + 1 : floatresult;
+	b = 31;
+	while(b >= 0 && floatresult[b] != 1)begin
+		b = b -1;
 		end
-//	j = i;
-	result = fixedresult;
+	if(b < 23)begin
+		floatresult = floatresult << 23 - b;
+		end
+	else begin
+		floatresult = floatresult >> b - 23;
+		end
+	exponent = b - fixpointpos + 127;
+	floatresult[30:23] = exponent;
+	if(!targetnumber || rst)begin
+		floatresult = floatresult & 32'h0;
+		end
+//	j = b;
+	
+	result = floatresult;
 end
+
+
 
 endmodule
