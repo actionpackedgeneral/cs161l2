@@ -21,7 +21,7 @@ integer b,mantissa,exponent,i;
 always @* begin
 	floatresult = targetnumber;
 	
-	floatresult = (targetnumber[31]) ? !floatresult + 1 : floatresult;
+	floatresult = (targetnumber[31]) ? ~floatresult + 1 : floatresult;
 	b = 31;
 	while(b > 0 && floatresult[b] != 1)begin
 		b = b -1;
