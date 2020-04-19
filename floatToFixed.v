@@ -33,7 +33,7 @@ always @(*) begin
 		fixedresult = ~fixedresult + 1;
 		end
 //	j = i;
-	if(!targetnumber) begin
+	if(!float) begin
 		fixedresult = 0;
 		end
 	result = fixedresult;
