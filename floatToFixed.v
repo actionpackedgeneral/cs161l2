@@ -30,7 +30,7 @@ always @(*) begin
 	fixedresult[23] = 1;
 	fixedresult = fixedresult >> i;
 	if(sign)begin
-		fixedresult = !fixedresult + 1;
+		fixedresult = ~fixedresult + 1;
 		end
 //	j = i;
 	result = fixedresult;
