@@ -24,15 +24,13 @@ always @(*) begin
 	fixedresult = float;
 	
 	sign = fixedresult[31];
-	i = 0;
-	while(!fixedresult[i] && i < 23)begin
-		i = i + 1;
-	end
+	exponent = float[30:23];
+	i = 22 - fixpointpos -1 ;
 	fixedresult[31:24] = 0;
 	fixedresult[23] = 1;
 	fixedresult = fixedresult >> i;
 	if(sign)begin
-		fixedresult = ~fixedresult + 1;
+		fixedresult = !fixedresult + 1;
 		end
 //	j = i;
 	result = fixedresult;
