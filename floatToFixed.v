@@ -24,8 +24,8 @@ always @(*) begin
 	fixedresult = float;
 	
 	sign = fixedresult[31];
-	exponent = float[30:23];
-	i = 22 - fixpointpos -1 ;
+	exponent = float[30:23] - 127;
+	i = 22 - fixpointpos + exponent;
 	fixedresult[31:24] = 0;
 	fixedresult[23] = 1;
 	fixedresult = fixedresult >> i;
